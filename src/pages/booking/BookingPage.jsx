@@ -44,12 +44,15 @@ function BookingPage() {
             header={selectedDate?.toLocaleDateString() || "2. Elige la Fecha"}
             disabled={!selectedService}
           >
-            <Calendar 
-              inline
-              value={selectedDate}
-              onChange={e => setSelectedDate(e.value)}
-              minDate={new Date()}
-            />
+            <div className="card p-4">
+              <Calendar 
+                inline
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.value)}
+                minDate={new Date()}
+                className="w-full"
+              />
+            </div>
           </AccordionTab>
 
           <AccordionTab 
