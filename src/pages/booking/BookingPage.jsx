@@ -7,17 +7,17 @@ import { Steps } from 'primereact/steps';
 import Header from '../../components/Header';
 import './BookingPage.css';
 
-  const services = [
+const services = [
   { name: 'Corte Básico ✂️', price: '$200' },
   { name: 'Corte y Peinado 💇', price: '$350' },
   { name: 'Servicio Completo 💅', price: '$500' }
-  ];
+];
 
-const initialData = { service: '', date: null, time: '', nombre: '', telefono: '' };
+const hours = ['9:00', '10:00', '11:00', '12:00', '16:00', '17:00'];
 
 const BookingPage = () => {
-  const [step, setStep] = useState(0);           
-  const [data, setData] = useState(initialData);
+  const [step, setStep] = useState(0);
+  const [data, setData] = useState({ service: '', date: null, time: '', nombre: '', telefono: '' });
   const [error, setError] = useState('');
 
   const handleNext = (key, value) => {
@@ -26,18 +26,14 @@ const BookingPage = () => {
     if (step < 3) setStep(step + 1);
   };
 
-  const validate = () => {
-    if (!data.service || !data.date || !data.time || !data.nombre || !data.telefono) {
+  const handleSubmit = () => {
+    if (Object.values(data).some(value => !value)) {
       setError('Por favor complete todos los campos');
-      return false;
+      return;
     }
-    return true;
-  };
-
-  const resetForm = () => {
-    setData(initialData);
+    alert(`Cita confirmada:\nServicio: ${data.service}\nFecha: ${data.date?.toLocaleDateString()}\nHora: ${data.time}\nNombre: ${data.nombre}\nTeléfono: ${data.telefono}`);
+    setData({ service: '', date: null, time: '', nombre: '', telefono: '' });
     setStep(0);
-    setError('');
   };
 
   const steps = [
@@ -59,9 +55,9 @@ const BookingPage = () => {
       )
     },
     {
-      label: 'Fecha', 
+      label: 'Fecha',
       content: (
-        <div className="w-full" style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Calendar 
             value={data.date} 
             onChange={e => handleNext('date', e.value)} 
@@ -73,10 +69,10 @@ const BookingPage = () => {
       )
     },
     {
-      label: 'Hora', 
+      label: 'Hora',
       content: (
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-          {['9:00','10:00','11:00','12:00','16:00','17:00'].map(t => (
+          {hours.map(t => (
             <Button 
               key={t} 
               className="p-3 rounded-2xl" 
@@ -89,42 +85,25 @@ const BookingPage = () => {
       )
     },
     {
-      label: 'Datos', 
+      label: 'Datos',
       content: (
-        <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
-          <InputText 
-            placeholder="Nombre *" 
-            value={data.nombre} 
-            onChange={e => setData({...data, nombre: e.target.value})} 
-            className="w-full"
-          />
-          <InputText 
-            placeholder="Teléfono *" 
-            value={data.telefono} 
-            onChange={e => setData({...data, telefono: e.target.value})} 
-            className="w-full"
-          />
-          {error && <small className="text-red-500">{error}</small>}
-          <div className="w-full">
-            <Button 
-              className="mt-2" 
-              onClick={() => {
-                if (validate()) {
-                  alert(
-`Cita confirmada:
-Servicio: ${data.service}
-Fecha: ${data.date?.toLocaleDateString()}
-Hora: ${data.time}
-Nombre: ${data.nombre}
-Teléfono: ${data.telefono}`
-                  );
-                  resetForm();
-                }
-              }}
-            >
-              Confirmar
-            </Button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <InputText 
+              placeholder="Nombre *" 
+              value={data.nombre} 
+              onChange={e => setData({...data, nombre: e.target.value})} 
+              style={{ flex: 1, minWidth: '400px', height: '40px' }}
+            />
+            <InputText 
+              placeholder="Teléfono *" 
+              value={data.telefono} 
+              onChange={e => setData({...data, telefono: e.target.value})} 
+              style={{ flex: 1, minWidth: '400px', height: '40px' }}
+            />
+            <Button onClick={handleSubmit} style={{ minWidth: '120px', height: '40px' }}>Confirmar</Button>
           </div>
+          {error && <small className="text-red-500">{error}</small>}
         </div>
       )
     }
