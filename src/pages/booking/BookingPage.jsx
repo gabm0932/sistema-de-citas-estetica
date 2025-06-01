@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
 import { Steps } from 'primereact/steps';
+import { Toast } from 'primereact/toast';
 import Header from '../../components/Header';
 import './BookingPage.css';
 
@@ -19,6 +20,7 @@ const BookingPage = () => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState({ service: '', date: null, time: '', nombre: '', telefono: '' });
   const [error, setError] = useState('');
+  const toast = useRef(null);
 
   const handleNext = (key, value) => {
     setData({...data, [key]: value});
@@ -31,7 +33,12 @@ const BookingPage = () => {
       setError('Por favor complete todos los campos');
       return;
     }
-    alert(`Cita confirmada:\nServicio: ${data.service}\nFecha: ${data.date?.toLocaleDateString()}\nHora: ${data.time}\nNombre: ${data.nombre}\nTeléfono: ${data.telefono}`);
+    toast.current.show({
+      severity: 'success',
+      summary: '¡Cita Agendada!',
+      detail: `Servicio: ${data.service}\nFecha: ${data.date?.toLocaleDateString()}\nHora: ${data.time}`,
+      life: 5000
+    });
     setData({ service: '', date: null, time: '', nombre: '', telefono: '' });
     setStep(0);
   };
@@ -111,6 +118,7 @@ const BookingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Toast ref={toast} />
       <Header />
       <div className="container mx-auto p-4">
         <Card className="shadow-lg">
