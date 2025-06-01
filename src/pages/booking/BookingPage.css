@@ -13,7 +13,8 @@
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   background: white !important;
-  width: 500px !important;
+  width: 100% !important;
+  max-width: 500px !important;
   overflow: hidden !important;
 }
 
@@ -29,9 +30,17 @@
 
 .custom-calendar .p-datepicker table td > span {
   color: #374151;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .custom-calendar .p-datepicker table td > span {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.9rem;
+  }
 }
 
 .custom-calendar .p-datepicker table td.p-datepicker-today > span {

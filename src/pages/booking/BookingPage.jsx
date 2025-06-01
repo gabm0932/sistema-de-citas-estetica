@@ -47,12 +47,11 @@ const BookingPage = () => {
     {
       label: 'Servicio',
       content: (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <div className="flex flex-wrap justify-content-center gap-3">
           {services.map(s => (
             <Button 
               key={s.name} 
-              className="p-3 rounded-2xl" 
-              style={{ minWidth: '200px' }}
+              className="p-3 border-round-2xl w-12rem md:w-15rem"
               onClick={() => handleNext('service', s.name)}
             >
               {s.name} - {s.price}
@@ -64,13 +63,13 @@ const BookingPage = () => {
     {
       label: 'Fecha',
       content: (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className="flex justify-content-center">
           <Calendar 
             value={data.date} 
             onChange={e => handleNext('date', e.value)} 
             inline 
             minDate={new Date()} 
-            className="custom-calendar" 
+            className="custom-calendar w-full md:w-30rem" 
           />
         </div>
       )
@@ -78,11 +77,11 @@ const BookingPage = () => {
     {
       label: 'Hora',
       content: (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <div className="flex flex-wrap justify-content-center gap-2">
           {hours.map(t => (
             <Button 
               key={t} 
-              className="p-3 rounded-2xl" 
+              className="p-3 border-round-2xl w-8rem"
               onClick={() => handleNext('time', t)}
             >
               {t}
@@ -94,21 +93,26 @@ const BookingPage = () => {
     {
       label: 'Datos',
       content: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <div className="flex flex-column gap-3">
+          <div className="flex flex-column md:flex-row gap-3">
             <InputText 
               placeholder="Nombre *" 
               value={data.nombre} 
               onChange={e => setData({...data, nombre: e.target.value})} 
-              style={{ flex: 1, minWidth: '400px', height: '40px' }}
+              className="w-full"
             />
             <InputText 
               placeholder="Teléfono *" 
               value={data.telefono} 
               onChange={e => setData({...data, telefono: e.target.value})} 
-              style={{ flex: 1, minWidth: '400px', height: '40px' }}
+              className="w-full"
             />
-            <Button onClick={handleSubmit} style={{ minWidth: '120px', height: '40px' }}>Confirmar</Button>
+            <Button 
+              onClick={handleSubmit} 
+              className="w-full md:w-auto"
+            >
+              Confirmar
+            </Button>
           </div>
           {error && <small className="text-red-500">{error}</small>}
         </div>
@@ -120,13 +124,17 @@ const BookingPage = () => {
     <div className="min-h-screen bg-gray-50">
       <Toast ref={toast} />
       <Header />
-      <div className="container mx-auto p-4">
-        <Card className="shadow-lg">
+      <div className="container mx-auto p-3">
+        <Card className="shadow-2">
           <Steps model={steps} activeIndex={step} onSelect={setStep} className="mb-4" />
-          <div className="p-3" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="p-3">
             {steps[step].content}
           </div>
-          {step > 0 && <Button text onClick={() => setStep(step - 1)}>Atrás</Button>}
+          {step > 0 && (
+            <div className="flex justify-content-start">
+              <Button text onClick={() => setStep(step - 1)}>Atrás</Button>
+            </div>
+          )}
         </Card>
       </div>
     </div>
